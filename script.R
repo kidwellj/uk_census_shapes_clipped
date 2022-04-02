@@ -48,30 +48,46 @@ st_write(buildings_buffer, "data/OS_Open_Zoomstack_district_buildings_buffered.g
 # with filled space for unoccupied layers
 difference_ctry <- st_difference(countries_simplified_100m$geom, buildings_buffer)
 ## Write results to a file:
-st_write(difference_ctry, "data/infuse_ctry_2011_simplified_100_buildings_overlay_.gpkg")
+st_write(difference_ctry, "data/infuse_ctry_2011_simplified_100m_buildings_overlay.gpkg")
 # Simplify layer
 difference_ctry_simplified = st_simplify(difference_ctry, dTolerance = 100)  # 100 m
-st_write(difference_ctry_simplified, "data/infuse_ctry_2011_simplified_100_buildings_overlay_simplified.gpkg")
+st_write(difference_ctry_simplified, "data/infuse_ctry_2011_simplified_100m_buildings_overlay_simplified.gpkg")
 # Invert polygons in this new layer
 inversion_ctry <- st_difference(difference_ctry, countries_simplified_100m$geom)
 # Write results to a file:
-st_write(inversion_ctry, "data/infuse_ctry_2011_simplified_100_buildings.gpkg")
+st_write(inversion_ctry, "data/infuse_ctry_2011_simplified_100m_buildings.gpkg")
 inversion_ctry_simplified = st_simplify(inversion_ctry, dTolerance = 100)  # 100 m
-st_write(inversion_ctry_simplified, "data/infuse_ctry_2011_simplified_100_buildings_simplified.gpkg")
+st_write(inversion_ctry_simplified, "data/infuse_ctry_2011_simplified_100m_buildings_simplified.gpkg")
 
 ## Process local authorities simplified shapefiles -----
 difference_la <- st_difference(local_authorities_simplified_100m$geom, buildings_buffer)
 ## Write results to a file:
-st_write(difference_la, "data/infuse_dist_lyr_2011_simplified_100_buildings_overlay.gpkg")
+st_write(difference_la, "data/infuse_dist_lyr_2011_simplified_100m_buildings_overlay.gpkg")
 # Simplify layer
 difference_simplified = st_simplify(difference_la, dTolerance = 100)  # 100 m
-st_write(difference_simplified, "data/infuse_dist_lyr_2011_simplified_100_buildings_overlay_simplified.gpkg")
+st_write(difference_simplified, "data/infuse_dist_lyr_2011_simplified_100m_buildings_overlay_simplified.gpkg")
 # Invert polygons in this new layer
 inversion_la <- st_difference(difference_la, local_authorities_simplified_100m$geom)
 # Write results to a file:
-st_write(inversion_la, "data/infuse_dist_lyr_2011_simplified_100_buildings.gpkg")
+st_write(inversion_la, "data/infuse_dist_lyr_2011_simplified_100m_buildings.gpkg")
 inversion_simplified_la = st_simplify(inversion_la, dTolerance = 100)  # 100 m
-st_write(inversion_simplified_la, "data/infuse_dist_lyr_2011_simplified_100_buildings_simplified.gpkg")
+st_write(inversion_simplified_la, "data/infuse_dist_lyr_2011_simplified_100m_buildings_simplified.gpkg")
+
+## Process lsoa simplified shapefile -----
+difference_lsoa <- st_difference(lsoa11_simplified_100m$geom, buildings_buffer)
+## Write results to a file:
+st_write(difference_lsoa, "data/infuse_lsoa_lyr_2011_simplified_100m_buildings_overlay.gpkg")
+# Simplify layer
+difference_lsoa_simplified = st_simplify(difference_lsoa, dTolerance = 100)  # 100 m
+st_write(difference_lsoa_simplified, "data/infuse_lsoa_lyr_2011_simplified_100m_buildings_overlay_simplified.gpkg")
+
+## Process oa simplified shapefile -----
+difference_oa <- st_difference(oa11_simplified_100m$geom, buildings_buffer)
+## Write results to a file:
+st_write(difference_oa, "data/infuse_oa_lyr_2011_simplified_100m_buildings_overlay.gpkg")
+# Simplify layer
+difference_oa_simplified = st_simplify(difference_oa, dTolerance = 100)  # 100 m
+st_write(difference_oa_simplified, "data/infuse_oa_lyr_2011_simplified_100m_buildings_overlay_simplified.gpkg")
 
 ## Process countries shapefile -----
 difference_ctry <- st_difference(countries$geom, buildings_buffer)
@@ -93,3 +109,17 @@ st_write(difference_la, "data/infuse_dist_lyr_2011_buildings_overlay.gpkg")
 inversion_la <- st_difference(difference_la, local_authorities$geom)
 # Write results to a file:
 st_write(inversion_la, "data/infuse_dist_lyr_2011_buildings.gpkg")
+
+## Process lsoa shapefile -----
+difference_lsoa <- st_difference(lsoa11$geom, buildings_buffer)
+# Write results to a file:
+st_write(difference_lsoa, "data/infuse_lsoa_lyr_2011_buildings_overlay.gpkg")
+difference_lsoa_simplified = st_simplify(difference_lsoa, dTolerance = 100)  # 100 m
+st_write(difference_lsoa_simplified, "data/infuse_lsoa_lyr_2011_buildings_overlay_simplified.gpkg")
+
+## Process oa shapefile -----
+difference_oa <- st_difference(oa11$geom, buildings_buffer)
+# Write results to a file:
+st_write(difference_oa, "data/infuse_oa_lyr_2011_buildings_overlay.gpkg")
+difference_oa_simplified = st_simplify(difference_oa, dTolerance = 100)  # 100 m
+st_write(difference_oa_simplified, "data/infuse_oa_lyr_2011_buildings_overlay_simplified.gpkg")
