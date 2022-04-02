@@ -7,32 +7,43 @@ oa11 <- st_read("./data/infuse_oa_lyr_2011.shp")
 lsoa11 <- st_read("./data/infuse_lsoa_lyr_2011.shp")
 # download local authorities data for whole UK - level 1 (least detailed)
 local_authorities <- st_read("data/infuse_dist_lyr_2011.shp")
-# Load buildings shapefile:
-buildings <- st_read("./data/OS_Open_Zoomstack_district_buildings.gpkg")
 # open country shapefiles
 countries <- st_read("data/infuse_ctry_2011.shp")
+# load postcode areas shapefile
+postcode_areas <- st_read("data/GB_Postcodes/PostalArea.shp")
+# load postcode districts shapefile
+postcode_districts <- st_read("data/GB_Postcodes/PostalDistrict.shp")
+# load postcode areas shapefile
+postcode_sectors <- st_read("data/GB_Postcodes/PostalSector.shp")
+
+# Load buildings shapefile:
+buildings <- st_read("./data/OS_Open_Zoomstack_district_buildings.gpkg")
 
 # Generate simplified versions at 10m:
 oa11_simplified_10m <- st_simplify(oa11, dTolerance = 10)  # 10 m
 lsoa11_simplified_10m <- st_simplify(lsoa11, dTolerance = 10)  # 10 m
 local_authorities_simplified_10m <- st_simplify(local_authorities, dTolerance = 10)  # 10 m
 countries_simplified_10m <- st_simplify(countries, dTolerance = 10)  # 10 m
+postcode_areas_simplified_10m <- st_simplify(postcode_areas, dTolerance = 10)  # 10 m
 
 st_write(oa11_simplified_10m, "data/infuse_oa_lyr_2011_simplified_10m.gpkg")
 st_write(lsoa11_simplified_10m, "data/infuse_lsoa_lyr_2011_simplified_10m.gpkg")
 st_write(local_authorities_simplified_10m, "data/infuse_dist_lyr_2011_simplified_10m.gpkg")
 st_write(countries_simplified_10m, "data/infuse_ctry_2011_simplified_10m.gpkg")
+st_write(postcode_areas_simplified_10m, "data/PostalArea_simplified_10m.gpkg")
 
 # Generate simplified versions at 100m:
 oa11_simplified_100m <- st_simplify(oa11, dTolerance = 100)  # 100 m
 lsoa11_simplified_100m <- st_simplify(lsoa11, dTolerance = 100)  # 100 m
 local_authorities_simplified_100m <- st_simplify(local_authorities, dTolerance = 100)  # 100 m
 countries_simplified_100m <- st_simplify(countries, dTolerance = 100)  # 100 m
+postcode_areas_simplified_100m <- st_simplify(postcode_areas, dTolerance = 100)  # 10 m
 
 st_write(oa11_simplified_100m, "data/infuse_oa_lyr_2011_simplified_100m.gpkg")
 st_write(lsoa11_simplified_100m, "data/infuse_lsoa_lyr_2011_simplified_100m.gpkg")
 st_write(local_authorities_simplified_100m, "data/infuse_dist_lyr_2011_simplified_100m.gpkg")
 st_write(countries_simplified_100m, "data/infuse_ctry_2011_simplified_100m.gpkg")
+st_write(postcode_areas_simplified_100m, "data/PostalArea_simplified_100m.gpkg")
 
 ## Initial work on data with buildings shapefile for large scale visualation -----
 # Create modest buffer around quite small building polygons for the sake of visualisation at 
@@ -89,6 +100,15 @@ st_write(difference_oa, "data/infuse_oa_lyr_2011_simplified_100m_buildings_overl
 difference_oa_simplified = st_simplify(difference_oa, dTolerance = 100)  # 100 m
 st_write(difference_oa_simplified, "data/infuse_oa_lyr_2011_simplified_100m_buildings_overlay_simplified.gpkg")
 
+## Process postcode areas simplified shapefile -----
+difference_postcode_areas <- st_difference(postcode_areas_simplified_100m$geom, buildings_buffer)
+## Write results to a file:
+st_write(difference_postcode_areas, "data/PostalArea_simplified_100m_buildings_overlay.gpkg")
+# Simplify layer
+difference_postcode_areas_simplified = st_simplify(difference_postcode_areas, dTolerance = 100)  # 100 m
+st_write(difference_postcode_areas_simplified, "data/PostalArea_simplified_100m_buildings_overlay_simplified.gpkg")
+
+
 ## Process countries shapefile -----
 difference_ctry <- st_difference(countries$geom, buildings_buffer)
 # Write results to a file:
@@ -123,3 +143,11 @@ difference_oa <- st_difference(oa11$geom, buildings_buffer)
 st_write(difference_oa, "data/infuse_oa_lyr_2011_buildings_overlay.gpkg")
 difference_oa_simplified = st_simplify(difference_oa, dTolerance = 100)  # 100 m
 st_write(difference_oa_simplified, "data/infuse_oa_lyr_2011_buildings_overlay_simplified.gpkg")
+
+## Process postcode areas shapefile -----
+difference_postcode_areas <- st_difference(postcode_areas$geom, buildings_buffer)
+## Write results to a file:
+st_write(difference_postcode_areas, "data/PostalArea_buildings_overlay.gpkg")
+# Simplify layer
+difference_postcode_areas_simplified = st_simplify(difference_postcode_areas, dTolerance = 100)  # 100 m
+st_write(difference_postcode_areas_simplified, "data/PostalArea_buildings_overlay_simplified.gpkg")
